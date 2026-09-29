@@ -131,6 +131,10 @@ body.overworld {
   letter-spacing: .01em;
 }
 
+/* Sealed (not-yet-unlocked) place: visible on the map but inert */
+.sealed { opacity: .45; }
+.sealed .m-place { fill: var(--ink-muted); }
+
 /* --- Map interactive bits (inside the SVG) --- */
 .marker { cursor: pointer; }
 .marker .dot {

@@ -39,6 +39,7 @@ LOCATIONS = {
         "place": "Bree",
         "sub": "The Warden's Gate",
         "accent": "rust",
+        "home": "map_home",
         "epigraph": "“None pass the gate without the Warden's leave.”",
         "lore": [
             "At the muddy crossroads east of the Shire, the village of Bree "
@@ -59,6 +60,8 @@ LOCATIONS = {
         "place": "Moria",
         "sub": "The Doors of Durin",
         "accent": "gold",
+        "home": "extended_map",
+        "secret": True,          # never link to Moria from the Bree side
         "epigraph": "“Speak, friend, and enter.”",
         "lore": [
             "Under the shadow of the Misty Mountains stand the West-gate of "
@@ -80,7 +83,15 @@ LOCATIONS = {
 
 @app.route("/")
 def map_home():
-    return render_template("map.html", locations=LOCATIONS)
+    # Jacob's hint URL. Moria is shown but NOT clickable and its path is not
+    # emitted here, so his players never receive your segment's URL.
+    return render_template("map.html", locations=LOCATIONS, extended=False)
+
+
+@app.route("/extendedmap")
+def extended_map():
+    # Your hint URL (given inside your own segment). Both places are clickable.
+    return render_template("map.html", locations=LOCATIONS, extended=True)
 
 
 @app.route("/bree")

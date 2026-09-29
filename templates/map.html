@@ -100,7 +100,9 @@
       <circle cx="930" cy="330" r="5" fill="var(--ink-muted)"/>
       <text class="m-tiny" x="944" y="335" font-size="19" aria-hidden="true">Rivendell</text>
 
-      <!-- ===== MORIA marker (link -> /moria) ===== -->
+      <!-- ===== MORIA ===== -->
+      {% if extended %}
+      <!-- clickable only on the extended (your-hint) map -->
       <a href="{{ url_for('moria') }}"
          class="marker" data-place="Moria"
          role="link" aria-label="Travel to Moria — the Doors of Durin.">
@@ -110,6 +112,15 @@
         <text class="m-place" x="760" y="545" font-size="40" text-anchor="middle">Moria</text>
         <text class="m-note" x="760" y="576" font-size="21" text-anchor="middle">the Doors of Durin</text>
       </a>
+      {% else %}
+      <!-- sealed & inert: a place on the map, but no link and no URL emitted -->
+      <g class="sealed" aria-hidden="true">
+        <circle cx="760" cy="470" r="15" fill="none" stroke="var(--moria)" stroke-width="2" stroke-dasharray="3 4"/>
+        <circle cx="760" cy="470" r="8" fill="var(--moria)"/>
+        <text class="m-place" x="760" y="545" font-size="40" text-anchor="middle">Moria</text>
+        <text class="m-note" x="760" y="576" font-size="21" text-anchor="middle">the Doors of Durin</text>
+      </g>
+      {% endif %}
       <text class="m-tiny" x="820" y="602" font-size="20" text-anchor="middle" aria-hidden="true">The Misty Mountains</text>
 
       <!-- ===== Lothlorien (flavour) ===== -->

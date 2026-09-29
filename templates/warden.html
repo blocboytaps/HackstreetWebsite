@@ -24,15 +24,10 @@
       <p class="gate-sub">The Warden steps aside without a word.</p>
       <div class="scroll-body warden-body">
         <p>&ldquo;Well met, Warden,&rdquo; the old soldier mutters, and waves
-        you through into the muddy street beyond.</p>
-        <p>The road runs on eastward from here &mdash; past the Weather Hills,
-        under the mountains, to the sealed Doors of Durin.</p>
+        you through into the muddy street beyond. The gate is yours.</p>
       </div>
       <div class="cta-row" style="margin-top:24px">
-        <a class="travel to-moria" href="{{ url_for('moria') }}">
-          <span class="dot" aria-hidden="true"></span>
-          On to the Doors of Durin
-        </a>
+        <a class="travel" href="{{ url_for('map_home') }}">Back to the road</a>
       </div>
     {% else %}
       <div class="crest crest-shut" aria-hidden="true">&#9740;</div>
