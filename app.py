@@ -132,7 +132,9 @@ def warden_gate():
 # ---------------------------------------------------------------------------
 
 COUNCIL_DB_PATH = os.path.join(os.path.dirname(__file__), "scrolls.db")
-COUNCIL_FLAG = os.environ.get("SEG4_FLAG", "FLAG{Speak_Friend_And_Enter}")
+# The real flag is supplied ONLY via the SEG4_FLAG env var (set on Heroku).
+# Never hardcode it here — this file is in a public repo.
+COUNCIL_FLAG = os.environ.get("SEG4_FLAG", "FLAG{set_SEG4_FLAG_env_var}")
 
 
 def derive_word(name: str) -> str:
