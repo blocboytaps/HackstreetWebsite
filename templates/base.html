@@ -12,7 +12,9 @@
 </head>
 <body class="{% block body_class %}{% endblock %}">
   <a class="skip" href="#main">Skip to content</a>
-  {% block content %}{% endblock %}
+  <div class="page">{% block content %}{% endblock %}</div>
   {% block scripts %}{% endblock %}
+  <script src="{{ url_for('static', filename='js/fx.js') }}"
+          data-static="{{ url_for('static', filename='') }}" defer></script>
 </body>
 </html>
