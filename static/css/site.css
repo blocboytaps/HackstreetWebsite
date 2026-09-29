@@ -89,10 +89,10 @@ body.overworld {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-4) var(--space-3);
+  padding: var(--space-3) var(--space-3) var(--space-2);
 }
 
-.map-shell { width: 100%; max-width: 1100px; }
+.map-shell { width: 100%; max-width: min(98vw, 1480px); }
 
 .map-frame {
   position: relative;
@@ -449,8 +449,14 @@ body.interior {
    POLISH — page transitions, torchlight, door video, compass, hovers
    ========================================================================= */
 
-/* Page enter / exit */
-.page { animation: page-in .55s var(--ease) both; }
+/* Page enter / exit. The wrapper recreates the column flow the body used
+   to provide directly, so interior flex:1 / margin-top:auto still work. */
+.page {
+  width: 100%; flex: 1 0 auto;
+  display: flex; flex-direction: column;
+  animation: page-in .55s var(--ease) both;
+}
+.overworld .page { align-items: center; justify-content: center; }
 @keyframes page-in {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: none; }
@@ -459,15 +465,6 @@ body.page-exit .page {
   opacity: 0; transform: translateY(-8px);
   transition: opacity .45s var(--ease), transform .45s var(--ease);
 }
-
-/* Door video overlay (map-location travel) */
-.door-overlay {
-  position: fixed; inset: 0; z-index: 9999; background: #000;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; transition: opacity .28s ease;
-}
-.door-overlay.show { opacity: 1; }
-.door-video { width: 100%; height: 100%; object-fit: cover; }
 
 /* Torchlight follows the cursor across the map */
 .map-frame::before {
@@ -495,21 +492,21 @@ body.page-exit .page {
 .marker .m-place { transition: fill .25s var(--ease), letter-spacing .25s var(--ease); }
 .marker:hover .m-place { letter-spacing: 1.5px; }
 
-/* Ambient sound toggle */
+/* Ambient sound toggle — deliberately understated */
 .sound-toggle {
-  position: fixed; right: 18px; bottom: 18px; z-index: 50;
-  width: 46px; height: 46px; border-radius: 50%;
-  border: 1px solid var(--frame-soft); background: rgba(231, 217, 171, .85);
-  color: var(--ink); cursor: pointer; display: flex;
+  position: fixed; right: 16px; bottom: 16px; z-index: 50;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid transparent; background: transparent;
+  color: var(--frame-soft); cursor: pointer; display: flex;
   align-items: center; justify-content: center;
-  box-shadow: 0 4px 14px rgba(40, 28, 14, .3);
-  transition: transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+  opacity: .38;
+  transition: opacity .25s var(--ease), color .25s var(--ease);
 }
-.sound-toggle:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(40, 28, 14, .4); }
-.sound-toggle svg { width: 22px; height: 22px; }
+.sound-toggle:hover, .sound-toggle:focus-visible { opacity: .95; color: var(--frame); }
+.sound-toggle svg { width: 18px; height: 18px; }
 .sound-toggle .wave { opacity: 0; transition: opacity .2s var(--ease); }
+.sound-toggle.on { opacity: .85; color: var(--bree); }
 .sound-toggle.on .wave { opacity: 1; }
-.sound-toggle.on { background: var(--gold); }
 
 /* Hover polish shared across interior pages */
 .back-link { position: relative; }

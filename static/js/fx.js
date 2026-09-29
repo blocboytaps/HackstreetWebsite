@@ -42,18 +42,17 @@
     if (e.target.closest("button, a[href], input[type=submit], .marker")) click();
   }, { passive: true });
 
-  // ---- door-sound + fade page transition for ordinary links -----------
+  // ---- door-sound + fade page transition (links AND map markers) ------
   document.addEventListener("click", function (e) {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
-    var marker = e.target.closest(".marker");
-    if (marker) return;                       // markers handled by the video below
-    var a = internalLink(e.target);
-    if (!a) return;
-    if (reduce) return;                        // let it navigate immediately
+    var marker = e.target.closest(".marker");            // SVG <a> — read href directly
+    var href = marker ? marker.getAttribute("href") : (internalLink(e.target) || {}).href;
+    if (!href) return;
+    if (reduce) return;                                  // let it navigate immediately
     e.preventDefault();
     play(sndDoor);
     document.body.classList.add("page-exit");
-    setTimeout(function () { window.location.href = a.href; }, 480);
+    setTimeout(function () { window.location.href = href; }, 480);
   });
 
   // ---- door-sound on the "Speak" form submit --------------------------
@@ -66,35 +65,6 @@
     document.body.classList.add("page-exit");
     form.dataset.fxDone = "1";
     setTimeout(function () { form.submit(); }, 420);
-  });
-
-  // ---- DOOR VIDEO overlay when a map location is clicked --------------
-  function doorVideoThen(href) {
-    if (reduce) { window.location.href = href; return; }
-    var ov = document.createElement("div");
-    ov.className = "door-overlay";
-    ov.innerHTML =
-      '<video class="door-video" muted playsinline preload="auto">' +
-      '<source src="' + STATIC + '/video/door.mp4" type="video/mp4"></video>';
-    document.body.appendChild(ov);
-    requestAnimationFrame(function () { ov.classList.add("show"); });
-    var vid = ov.querySelector("video");
-    var done = false;
-    function go() { if (done) return; done = true; window.location.href = href; }
-    play(sndDoor);
-    var pr = vid.play(); if (pr) pr.catch(function () {});
-    vid.addEventListener("ended", go);
-    setTimeout(go, 3200);                       // safety net if the video stalls
-  }
-
-  var markers = document.querySelectorAll(".marker");
-  markers.forEach(function (m) {
-    m.addEventListener("click", function (e) {
-      var href = m.getAttribute("href");
-      if (!href) return;
-      e.preventDefault();
-      doorVideoThen(href);
-    });
   });
 
   // ---- mouse-following compass (landing only) -------------------------
