@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Hackstreet — The Road from Bree to Moria{% endblock %}
+{% block body_class %}overworld{% endblock %}
+
+{% block content %}
+<main id="main" class="map-shell">
+  <h1 class="visually-hidden">Hackstreet — travel the road from Bree to Moria</h1>
+
+  <div class="map-frame">
+    <svg class="map-svg" viewBox="0 0 1200 780" role="group"
+         aria-label="A map of the road between Bree and Moria. Two locations can be visited."
+         xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <style>
+          .m-place  { font-family: "Cinzel", Georgia, serif; font-weight: 700; fill: var(--ink); }
+          .m-note   { font-family: "EB Garamond", Georgia, serif; font-style: italic; fill: var(--ink-muted); }
+          .m-tiny   { font-family: "EB Garamond", Georgia, serif; font-style: italic; fill: var(--ink-muted); }
+          .compass  { font-family: "Cinzel", Georgia, serif; fill: var(--frame-soft); }
+        </style>
+        <radialGradient id="fog" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"  stop-color="#efe6c4" stop-opacity=".9"/>
+          <stop offset="100%" stop-color="#efe6c4" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- faint fog / age stains -->
+      <circle cx="1010" cy="250" r="300" fill="url(#fog)"/>
+      <circle cx="240"  cy="640" r="320" fill="url(#fog)"/>
+
+      <!-- inner border -->
+      <rect x="28" y="28" width="1144" height="604" fill="none"
+            stroke="var(--frame-soft)" stroke-width="2.5"/>
+
+      <!-- ===== dotted travel route (static) ===== -->
+      <path id="route" d="M 250 224 Q 500 300 742 458" fill="none"
+            stroke="var(--route)" stroke-width="3" class="route-line"/>
+      <!-- animated overlay that "walks" on navigation -->
+      <path id="routeTravel" d="M 250 224 Q 500 300 742 458" fill="none"
+            stroke="var(--bree)" stroke-width="3.5" class="route-travel" aria-hidden="true"/>
+
+      <!-- ===== The Shire (flavour, not a link) ===== -->
+      <circle cx="120" cy="112" r="6" fill="var(--ink-muted)"/>
+      <text class="m-tiny" x="138" y="118" font-size="22">the Shire</text>
+
+      <!-- ===== Compass rose (top-right) ===== -->
+      <g transform="translate(1010 130)" aria-hidden="true">
+        <circle r="46" fill="none" stroke="var(--frame-soft)" stroke-width="2"/>
+        <path d="M0,-66 L10,-10 L0,0 L-10,-10 Z" fill="var(--frame-soft)"/>
+        <path d="M0,66 L10,10 L0,0 L-10,10 Z" fill="none" stroke="var(--frame-soft)" stroke-width="1.5"/>
+        <path d="M-66,0 L-10,10 L0,0 L-10,-10 Z" fill="none" stroke="var(--frame-soft)" stroke-width="1.5"/>
+        <path d="M66,0 L10,10 L0,0 L10,-10 Z" fill="none" stroke="var(--frame-soft)" stroke-width="1.5"/>
+        <text class="compass" x="0" y="-56" font-size="20" text-anchor="middle">N</text>
+      </g>
+
+      <!-- ===== BREE marker (link -> /bree) ===== -->
+      <a href="{{ url_for('bree') }}"
+         class="marker" data-place="Bree"
+         role="link" aria-label="Travel to Bree — the Warden's Gate.">
+        <text class="m-place" x="245" y="180" font-size="42" text-anchor="middle">Bree</text>
+        <circle class="halo" cx="215" cy="212" r="20" fill="none" stroke="var(--bree)" stroke-width="2"/>
+        <circle cx="215" cy="212" r="15" fill="none" stroke="var(--bree)" stroke-width="2.5"/>
+        <circle class="dot" cx="215" cy="212" r="9" fill="var(--bree)" style="color: var(--bree)"/>
+        <text class="m-note" x="215" y="258" font-size="21" text-anchor="middle">the Warden's Gate</text>
+      </a>
+
+      <!-- ===== Misty Mountains (decorative) ===== -->
+      <g aria-hidden="true" stroke="var(--ink-muted)" stroke-width="2.5" fill="none" stroke-linejoin="round">
+        <path d="M 792 470 L 838 420 L 872 462 L 910 405 L 952 470"/>
+        <path d="M 820 486 L 860 448 L 900 486"/>
+      </g>
+
+      <!-- ===== MORIA marker (link -> /moria) ===== -->
+      <a href="{{ url_for('moria') }}"
+         class="marker" data-place="Moria"
+         role="link" aria-label="Travel to Moria — the Doors of Durin.">
+        <circle class="halo" cx="760" cy="470" r="22" fill="none" stroke="var(--moria)" stroke-width="2"/>
+        <circle cx="760" cy="470" r="16" fill="none" stroke="var(--moria)" stroke-width="2.5"/>
+        <circle class="dot" cx="760" cy="470" r="10" fill="var(--moria)" style="color: var(--moria)"/>
+        <text class="m-place" x="760" y="545" font-size="40" text-anchor="middle">Moria</text>
+        <text class="m-note" x="760" y="576" font-size="21" text-anchor="middle">the Doors of Durin</text>
+      </a>
+      <text class="m-tiny" x="820" y="602" font-size="20" text-anchor="middle" aria-hidden="true">The Misty Mountains</text>
+
+      <!-- ===== Lothlorien (flavour) ===== -->
+      <circle cx="980" cy="612" r="6" fill="var(--ink-muted)"/>
+      <text class="m-tiny" x="998" y="618" font-size="21">Lothlórien</text>
+    </svg>
+  </div>
+
+  <p class="map-caption">Click a marker to travel to that stronghold.</p>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var travel = document.getElementById('routeTravel');
+    var markers = document.querySelectorAll('.marker');
+
+    markers.forEach(function (m) {
+      m.addEventListener('click', function (e) {
+        if (reduce || !travel) return;               // let the link navigate normally
+        e.preventDefault();
+        var href = m.getAttribute('href');
+        var toBree = m.getAttribute('data-place') === 'Bree';
+        var len = travel.getTotalLength ? travel.getTotalLength() : 700;
+
+        travel.style.transition = 'none';
+        travel.setAttribute('stroke', toBree ? 'var(--bree)' : 'var(--moria)');
+        travel.style.strokeDasharray = len;
+        // draw toward the clicked marker: Bree is the start of the path, Moria the end
+        travel.style.strokeDashoffset = toBree ? -len : len;
+        travel.getBoundingClientRect();               // force reflow
+        travel.style.transition = 'stroke-dashoffset .7s cubic-bezier(.22,.61,.36,1)';
+        travel.style.strokeDashoffset = '0';
+
+        window.setTimeout(function () { window.location.href = href; }, 720);
+      });
+    });
+  })();
+</script>
+{% endblock %}

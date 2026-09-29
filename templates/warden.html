@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}The Warden's Gate — Bree{% endblock %}
+{% block body_class %}interior accent-rust{% endblock %}
+
+{% block content %}
+<header class="wrap">
+  <div class="ribbon">
+    <a class="back-link" href="{{ url_for('bree') }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Bree
+    </a>
+    <span class="seg-tag">The Warden's Gate</span>
+  </div>
+</header>
+
+<main id="main" class="wrap gate-wrap">
+  <section class="gate-card warden-card">
+    {% if passed %}
+      <div class="crest crest-open" aria-hidden="true">&#9737;</div>
+      <h1 class="gate-title">The gate opens</h1>
+      <p class="gate-sub">The Warden steps aside without a word.</p>
+      <div class="scroll-body warden-body">
+        <p>&ldquo;Well met, Warden,&rdquo; the old soldier mutters, and waves
+        you through into the muddy street beyond.</p>
+        <p>The road runs on eastward from here &mdash; past the Weather Hills,
+        under the mountains, to the sealed Doors of Durin.</p>
+      </div>
+      <div class="cta-row" style="margin-top:24px">
+        <a class="travel to-moria" href="{{ url_for('moria') }}">
+          <span class="dot" aria-hidden="true"></span>
+          On to the Doors of Durin
+        </a>
+      </div>
+    {% else %}
+      <div class="crest crest-shut" aria-hidden="true">&#9740;</div>
+      <h1 class="gate-title">The gate is shut</h1>
+      <p class="gate-sub">&ldquo;None pass without the Warden's leave.&rdquo;</p>
+      <div class="scroll-body warden-body">
+        <p>The Warden looks you up and down and sees a common traveller.
+        &ldquo;No mark of office on you,&rdquo; he grunts. &ldquo;Come back
+        when you're someone I answer to.&rdquo;</p>
+        <p class="hint">He never asks a name &mdash; only glances at the
+        <em>token you already carry</em>, and decides. Tokens can be looked
+        at. Tokens can be changed.</p>
+      </div>
+      <div class="cta-row" style="margin-top:24px">
+        <a class="travel" href="{{ url_for('warden_gate') }}">Approach again</a>
+      </div>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}

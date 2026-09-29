@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Scroll #{{ scroll_id }} — Council Registry{% endblock %}
+{% block body_class %}interior{% endblock %}
+
+{% block content %}
+<header class="wrap">
+  <div class="ribbon">
+    <a class="back-link" href="{{ url_for('council_gate') }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      The Gate
+    </a>
+    <span class="seg-tag">Council Registry</span>
+  </div>
+</header>
+
+<main id="main" class="wrap gate-wrap">
+  <section class="gate-card scroll-card">
+    {% if found %}
+      <div class="scroll-ribbon" aria-hidden="true">&#128220;</div>
+      <p class="catalogue">Archive no. {{ '%03d'|format(scroll_id) }} · sealed sequence</p>
+      <h1 class="gate-title">A Sealed Scroll</h1>
+      <p class="scroll-owner">Lodged under the name <strong>{{ owner }}</strong></p>
+      <div class="scroll-body">{{ content }}</div>
+      <p class="catalogue-foot">The archive keeps every scroll in one long
+      sequence, from the first ever lodged.</p>
+    {% else %}
+      <div class="scroll-ribbon" aria-hidden="true">&#128220;</div>
+      <p class="catalogue">Archive no. {{ '%03d'|format(scroll_id) }}</p>
+      <h1 class="gate-title">Empty shelf</h1>
+      <p class="scroll-owner">No scroll rests at this number in the sequence.</p>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}

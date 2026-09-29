@@ -1,0 +1,18 @@
+# --- Python ---
+__pycache__/
+*.pyc
+.env
+venv/
+.venv/
+*.db
+
+# --- Editor / OS ---
+.DS_Store
+
+# --- Claude tooling + local notes (never deploy) ---
+.claude/
+
+# --- Project internals: solutions, source, flags — MUST NOT be published ---
+hackstreet-chain2-segment4-lotr/
+SESSION-HANDOFF.md
+SKILLS-INSTALL.md

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}{{ loc.place }} — {{ loc.sub }}{% endblock %}
+{% block desc %}{{ loc.lore[0] }}{% endblock %}
+{% block body_class %}interior accent-{{ loc.accent }}{% endblock %}
+
+{% block content %}
+<header class="wrap">
+  <div class="ribbon">
+    <a class="back-link" href="{{ url_for('map_home') }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      The Map
+    </a>
+    <span class="seg-tag">{{ loc.sub }}</span>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <h1 class="place">{{ loc.place }}</h1>
+    <p class="sub">{{ loc.sub }}</p>
+    <div class="rule"></div>
+    <p class="epigraph">{{ loc.epigraph }}</p>
+  </section>
+
+  <section class="lore">
+    {% for para in loc.lore %}
+    <p>{{ para }}</p>
+    {% endfor %}
+  </section>
+
+  <aside class="nudge" role="note">
+    <span class="nudge-mark" aria-hidden="true">&#10022;</span>
+    <p>{{ loc.nudge }}</p>
+  </aside>
+
+  <div class="cta-row">
+    <a class="enter-cta" href="{{ url_for(loc.enter_endpoint) }}">
+      {{ loc.enter_label }}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+</main>
+
+<nav class="footer-nav wrap" aria-label="Travel">
+  <span class="lead">Continue the road</span>
+  {% for slug, other in locations.items() if slug != loc.slug %}
+  <a class="travel to-{{ other.place|lower }}" href="{{ url_for(other.slug) }}">
+    <span class="dot" aria-hidden="true"></span>
+    To {{ other.place }} — {{ other.sub }}
+  </a>
+  {% endfor %}
+  <a class="travel" href="{{ url_for('map_home') }}">Back to the map</a>
+</nav>
+{% endblock %}

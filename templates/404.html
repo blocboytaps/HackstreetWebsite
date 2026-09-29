@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Lost on the road · Hackstreet{% endblock %}
+{% block body_class %}interior{% endblock %}
+
+{% block content %}
+<main id="main" class="void">
+  <h1>Not all who wander are found here</h1>
+  <p>There is no such place on this map.</p>
+  <p style="margin-top:24px">
+    <a class="travel" href="{{ url_for('map_home') }}">Back to the map</a>
+  </p>
+</main>
+{% endblock %}

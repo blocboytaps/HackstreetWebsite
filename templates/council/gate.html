@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}The Doors of Durin — Council Registry{% endblock %}
+{% block body_class %}interior{% endblock %}
+
+{% block content %}
+<header class="wrap">
+  <div class="ribbon">
+    <a class="back-link" href="{{ url_for('moria') }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Moria
+    </a>
+    <span class="seg-tag">The Council Archive</span>
+  </div>
+</header>
+
+<main id="main" class="wrap gate-wrap">
+  <section class="gate-card">
+    <h1 class="gate-title">The Doors of Durin</h1>
+    <p class="gate-sub">&ldquo;Speak, friend, and enter.&rdquo;</p>
+
+    <p class="inscription" aria-label="Inscription upon the doors">
+      The Word is graven from a name — the same letters, worked over and over,
+      salted against the dragon&rsquo;s hoard, and read out in the old runes of eight.
+    </p>
+
+    <form method="POST" action="{{ url_for('council_gate') }}" class="gate-form">
+      <label for="name">Name</label>
+      <input id="name" type="text" name="name" required autocomplete="off">
+
+      <label for="word">The Word</label>
+      <input id="word" type="text" name="word" required
+             placeholder="8 runes of hex" autocomplete="off" spellcheck="false">
+
+      <button type="submit" class="seal-btn">Speak</button>
+    </form>
+
+    {% if error %}<p class="gate-error" role="alert">{{ error }}</p>{% endif %}
+  </section>
+</main>
+{% endblock %}
