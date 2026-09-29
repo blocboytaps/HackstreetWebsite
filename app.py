@@ -88,7 +88,7 @@ def map_home():
     return render_template("map.html", locations=LOCATIONS, extended=False)
 
 
-@app.route("/extendedmap")
+@app.route("/extendedmap-5fb8f0")
 def extended_map():
     # Your hint URL (given inside your own segment). Both places are clickable.
     return render_template("map.html", locations=LOCATIONS, extended=True)
@@ -106,7 +106,7 @@ def bree():
     return resp
 
 
-@app.route("/moria")
+@app.route("/moria-c3fef5")
 def moria():
     return render_template("location.html", loc=LOCATIONS["moria"],
                            locations=LOCATIONS)
