@@ -165,7 +165,7 @@ def init_council_db():
     conn.close()
 
 
-@app.route("/council/gate", methods=["GET", "POST"])
+@app.route("/council-a0a444/gate", methods=["GET", "POST"])
 def council_gate():
     if request.method == "POST":
         name = request.form.get("name", "")
@@ -187,7 +187,7 @@ def council_gate():
     return render_template("council/gate.html")
 
 
-@app.route("/council/scroll/<int:scroll_id>")
+@app.route("/council-a0a444/scroll/<int:scroll_id>")
 def council_scroll(scroll_id):
     # Authentication (did you pass the doors?) but NO authorization (is this
     # scroll yours?). The missing owner comparison is the intentional IDOR.
